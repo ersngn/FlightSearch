@@ -1,5 +1,5 @@
-using AybJet.Application;
-using AybJet.Infrastructure;
+using FlightSearch.Application;
+using FlightSearch.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +22,5 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.MapControllers();
-
 
 app.Run();
