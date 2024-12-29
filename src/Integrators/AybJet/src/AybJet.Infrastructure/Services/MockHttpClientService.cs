@@ -12,8 +12,6 @@ public class MockHttpClientService : IHttpClientService
     {
         var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
         _mockDataPath = Path.Combine(baseDirectory, "Resources", "mock-flight-data.json");
-        // _mockDataPath = Path.Combine("/Users/eg/src/StudyCase/RoofStacks/FlightSearch/src/Integrators/AybJet/src/AybJet.Infrastructure/MockData/", "mock-flight-data.json");
-
     }
 
     public async Task<IEnumerable<T>> PostAsync<T>(string url, object body)

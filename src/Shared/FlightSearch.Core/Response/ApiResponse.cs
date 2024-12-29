@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using FluentValidation.Results;
 
 namespace FlightSearch.Core.Response;
@@ -10,7 +11,11 @@ public class ApiResponse<T>
     public T? Data { get; set; }
     public List<string>? Errors { get; set; } = new();
     
-
+    public ApiResponse()
+    {
+        
+    }
+    
     public ApiResponse(T data, string message, int statusCode)
     {
         Success = true;
@@ -18,7 +23,6 @@ public class ApiResponse<T>
         StatusCode = statusCode;
         Message = message;
     }
-
     public ApiResponse(string message, int statusCode, List<string>? errors = null)
     {
         Success = false;
@@ -43,8 +47,7 @@ public class ApiResponse<T>
             Success = true
         };
     }
-
-    // Success without data
+    
     public static ApiResponse<T> SuccessApiResponse(string message = "Success", int statusCode = 200)
     {
         return new ApiResponse<T>(default, message, statusCode)
@@ -52,14 +55,12 @@ public class ApiResponse<T>
             Success = true
         };
     }
-
-    // General error
+    
     public static ApiResponse<T> Error(string message, int statusCode = 500, List<string>? errors = null)
     {
         return new ApiResponse<T>(message, statusCode, errors);
     }
-
-    // Validation error
+    
     public static ApiResponse<T> ValidationError(string message, ValidationResult validationResult)
     {
         var errorMessages = validationResult.Errors.Select(e => e.ErrorMessage).ToList();

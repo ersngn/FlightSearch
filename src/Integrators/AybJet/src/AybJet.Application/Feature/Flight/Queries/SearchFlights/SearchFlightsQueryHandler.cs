@@ -5,7 +5,9 @@ using MediatR;
 
 namespace AybJet.Application.Feature.Flight.Queries.SearchFlights;
 
-public class SearchFlightsQueryHandler : IRequestHandler<SearchFlightsQuery, ApiResponse<IEnumerable<SearchFlightsQueryResponse>>>
+public class
+    SearchFlightsQueryHandler : IRequestHandler<SearchFlightsQuery,
+        ApiResponse<IEnumerable<SearchFlightsQueryResponse>>>
 {
     private readonly IHttpClientService _httpClientService;
     private readonly IValidator<SearchFlightsQuery> _validator;
@@ -23,7 +25,8 @@ public class SearchFlightsQueryHandler : IRequestHandler<SearchFlightsQuery, Api
         if (!validationResult.IsValid)
         {
             var errors = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
-            return ApiResponse<IEnumerable<SearchFlightsQueryResponse>>.ValidationError("Validation failed.", validationResult);
+            return ApiResponse<IEnumerable<SearchFlightsQueryResponse>>.ValidationError("Validation failed.",
+                validationResult);
         }
 
         try
@@ -31,9 +34,10 @@ public class SearchFlightsQueryHandler : IRequestHandler<SearchFlightsQuery, Api
             var flights = await _httpClientService.PostAsync<Domain.Models.Flight>("mock-url", request);
             if (!flights.Any())
             {
-                return ApiResponse<IEnumerable<SearchFlightsQueryResponse>>.SuccessApiResponse(new List<SearchFlightsQueryResponse>(), "No flights found.", 200);
+                return ApiResponse<IEnumerable<SearchFlightsQueryResponse>>.SuccessApiResponse(
+                    new List<SearchFlightsQueryResponse>(), "No flights found.");
             }
-            
+
             var result = flights
                 // .Where(f => f.Departure == request.Origin && f.Arrival == request.Destination &&
                 //             f.DepartureTime >= request.DepartureDate && f.ArrivalTime <= request.ReturnDate)
@@ -51,13 +55,15 @@ public class SearchFlightsQueryHandler : IRequestHandler<SearchFlightsQuery, Api
                 })
                 .OrderBy(f => f.Price)
                 .ToList();
-            
-            return ApiResponse<IEnumerable<SearchFlightsQueryResponse>>.SuccessApiResponse(result, "Flights retrieved successfully.", 200);
+
+            return ApiResponse<IEnumerable<SearchFlightsQueryResponse>>.SuccessApiResponse(result,
+                "Flights retrieved successfully.", 200);
         }
         catch (Exception ex)
         {
             //TODO: Log mekanizması eklenmelidir.
-            return ApiResponse<IEnumerable<SearchFlightsQueryResponse>>.Error("An error occurred while fetching flights.", 500, new List<string> { ex.Message });
+            return ApiResponse<IEnumerable<SearchFlightsQueryResponse>>.Error(
+                "An error occurred while fetching flights.", 500, new List<string> { ex.Message });
         }
     }
 }
